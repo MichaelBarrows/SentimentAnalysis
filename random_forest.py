@@ -28,9 +28,12 @@ from sklearn.metrics import precision_recall_fscore_support
 #       generated using the test predictions and the actual labels. These values
 #       are then returned.
 def random_forest_classifier (trees, features, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    classifier = RandomForestClassifier(n_estimators=trees,
-                                    max_features=features,
-                                    n_jobs=100)
+    if trees and features:
+        classifier = RandomForestClassifier(n_estimators=trees,
+                                            max_features=features,
+                                            n_jobs=100)
+    else:
+        classifier = RandomForestClassifier(n_jobs=100)
     classifier.fit(training_instances_bow, training_sentiment_scores)
     predicted_test_sentiment_scores = classifier.predict(test_instances_bow)
     return predicted_test_sentiment_scores, precision_recall_fscore_support(test_sentiment_scores, predicted_test_sentiment_scores, average='weighted')
@@ -56,13 +59,15 @@ def random_forest_classifier (trees, features, training_instances_bow, training_
 #       ((precision * recall) / (precision + recall)) * 2
 # description:
 #   This function takes the parameters required for the algorithm to run,
-#       splits them into two separate variables and calls the classification
-#       function (random_forest_classifier()) and extracts the metrics from the
-#       returned data which are then returned to the
+#       splits them into two separate variables (if present) and calls the
+#       classification function (random_forest_classifier()) and extracts the
+#       metrics from the returned data which are then returned to the
 #       processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    trees = modifier[0]
-    features = modifier[1]
+    if modifier:
+        trees, features = modifier[0], modifier[1]
+    else:
+        trees, features = None, None
     predictions, metrics = random_forest_classifier(trees, features, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
     precision = round(metrics[0], 4)
     recall = round(metrics[1], 4)

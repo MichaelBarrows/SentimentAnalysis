@@ -25,8 +25,6 @@ from sklearn.metrics import precision_recall_fscore_support
 #       are then returned.
 def decision_tree_classifier (training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
     classifier = tree.DecisionTreeClassifier()
-    print(test_instances_bow)
-    print(type(test_instances_bow))
     classifier.fit(training_instances_bow, training_sentiment_scores)
     predicted_test_sentiment_scores = classifier.predict(test_instances_bow)
     return predicted_test_sentiment_scores, precision_recall_fscore_support(test_sentiment_scores, predicted_test_sentiment_scores, average='weighted')

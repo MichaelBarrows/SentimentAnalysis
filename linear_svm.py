@@ -25,7 +25,10 @@ from sklearn.metrics import precision_recall_fscore_support
 #       generated using the test predictions and the actual labels. These values
 #       are then returned.
 def linear_svm_classifier (c_value, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    classifier = LinearSVC(C=c_value)
+    if c_value:
+        classifier = LinearSVC(C=c_value, max_iter=10000)
+    else:
+        classifier = LinearSVC(max_iter=10000)
     classifier.fit(X=training_instances_bow, y=training_sentiment_scores)
     predicted_test_sentiment_scores = classifier.predict(test_instances_bow)
     return predicted_test_sentiment_scores, precision_recall_fscore_support(test_sentiment_scores, predicted_test_sentiment_scores, average='weighted')
