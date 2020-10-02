@@ -28,7 +28,6 @@ import linear_svm
 #       recalls and f_scores across all of the folds to return the final metrics.
 def data_split_bow_run (algorithm, modifier, n_folds, df):
     kf = KFold(n_splits=n_folds)
-    print(algorithm, modifier)
     for training_index, test_index in kf.split(df.index.tolist()):
         training_ids, training_texts, training_sentiment_scores  = [], [], []
         test_ids, test_texts, test_sentiment_scores = [], [], []

@@ -77,5 +77,5 @@ def negation_not_handled ():
 
 # execute ML for negation handled dataset
 negation_handled()
-# execute ML for negation not  handled dataset 
+# execute ML for negation not  handled dataset
 negation_not_handled()
