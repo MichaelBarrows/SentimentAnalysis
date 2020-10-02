@@ -74,7 +74,6 @@ def data_split_bow_run (algorithm, modifier, n_folds, df):
     precision = average(precision)
     recall = average(recall)
     f_score = average(f_score)
-    print(precision, recall, f_score)
     return precision, recall, f_score
 
 # average():
@@ -86,7 +85,7 @@ def data_split_bow_run (algorithm, modifier, n_folds, df):
 # description:
 #   This function totals the items in the list and divides them by the length
 #       of the list to generate an average which is then rounded to 4 decimal
-#       places and returned.  
+#       places and returned.
 def average (list):
     total = 0
     for item in list:
