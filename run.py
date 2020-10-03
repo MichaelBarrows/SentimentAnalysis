@@ -31,7 +31,7 @@ def run_knn_classification (df, hyperparameter):
 def run_decision_tree_classification (df):
     global n_folds
     data = processor.data_split_bow_run("decision_tree", None, n_folds, df)
-    return ['Decision Tree', "N/A", data[0], data[1], data[2]]
+    return ['Decision Tree', "default", data[0], data[1], data[2]]
 
 # run_random_forest_classification()
 # parameters:
