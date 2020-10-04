@@ -34,19 +34,19 @@ def get_first_experimental_results (data, mpt, results_df):
     data = data[data.words_matched_percentage >= mpt]
     results = []
 
-    results.append(run.run_knn_classification(data, 3))
-    results.append(run.run_knn_classification(data, 7))
+    results.append(run.run_knn_classification(data, 3, "initial experiment"))
+    results.append(run.run_knn_classification(data, 7, "initial experiment"))
 
-    results.append(run.run_linear_svm_classification(data, 0.8))
-    results.append(run.run_linear_svm_classification(data, 1.2))
+    results.append(run.run_linear_svm_classification(data, 0.8, "initial experiment"))
+    results.append(run.run_linear_svm_classification(data, 1.2, "initial experiment"))
 
-    results.append(run.run_naive_bayes_classification(data, 0.8))
-    results.append(run.run_naive_bayes_classification(data, 1.2))
+    results.append(run.run_naive_bayes_classification(data, 0.8, "initial experiment"))
+    results.append(run.run_naive_bayes_classification(data, 1.2, "initial experiment"))
 
-    results.append(run.run_random_forest_classification(data, [50, 100]))
-    results.append(run.run_random_forest_classification(data, [75, 150]))
+    results.append(run.run_random_forest_classification(data, [50, 100], "initial experiment"))
+    results.append(run.run_random_forest_classification(data, [75, 150], "initial experiment"))
 
-    results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score"])
+    results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
     results_df = results_df.append(results)
 
     print(results_df)

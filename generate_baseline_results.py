@@ -21,13 +21,13 @@ def get_baseline_results (data, mpt, output_folder):
     data = data[data.words_matched_percentage >= mpt]
     results = []
 
-    results.append(run.run_knn_classification(data, None))
-    results.append(run.run_decision_tree_classification(data))
-    results.append(run.run_linear_svm_classification(data, None))
-    results.append(run.run_naive_bayes_classification(data, None))
-    results.append(run.run_random_forest_classification(data, None))
+    results.append(run.run_knn_classification(data, None, "baseline"))
+    results.append(run.run_decision_tree_classification(data, "baseline"))
+    results.append(run.run_linear_svm_classification(data, None, "baseline"))
+    results.append(run.run_naive_bayes_classification(data, None, "baseline"))
+    results.append(run.run_random_forest_classification(data, None, "baseline"))
 
-    results_df = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score"])
+    results_df = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
     helpers.dataframe_to_csv(results_df, output_folder + str(mpt) + "_mpt_results.csv")
     print(results_df)
 
