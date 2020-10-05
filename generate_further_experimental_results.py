@@ -36,7 +36,7 @@ def process_experiments (data, mpt, experiments, results_df):
     results = []
     counter = 1
     for index, row in experiments.iterrows():
-        print(str(mpt) + "% - " + str(counter) + " / " + str(len(experiments)))
+        print(str(mpt) + "% - " + str(counter) + " / " + str(len(experiments)) + " " + row.algorithm + str(row.hyperparameter))
         counter += 1
         if row.algorithm == "KNN":
             results.append(run.run_knn_classification(data, row.hyperparameter, "experiment"))
