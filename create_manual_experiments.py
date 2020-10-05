@@ -96,7 +96,7 @@ def get_existing_results (folder, dataset_type):
                 next_experiments(mpt, algorithm, row.hyperparameter)
                 break
     new_experiments_df = pd.DataFrame(experiments, columns=["mpt", "algorithm", "hyperparameter"])
-    helpers.dataframe_to_csv(new_experiments_df, "/home/michael/MRes/actual_project/sentiment_analysis/manual_" + dataset_type  +"_experiments.csv")
+    helpers.dataframe_to_csv(new_experiments_df, "/home/michael/MRes/actual_project/sentiment_analysis/next_" + dataset_type  +"_experiments.csv")
 
 # generate the next experiments for the negation handled dataset
 experiments = []
