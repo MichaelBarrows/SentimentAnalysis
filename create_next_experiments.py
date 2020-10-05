@@ -64,10 +64,10 @@ def next_experiments (mpt, algorithm, best_hyperparameter):
                 experiments.append([mpt, algorithm, 0.3])
                 experiments.append([mpt, algorithm, 1.5])
     if algorithm == "Random Forest":
-        experiments.append([mpt, algorithm, [100, 200]])
-        experiments.append([mpt, algorithm, [150, 300]])
-        experiments.append([mpt, algorithm, [200, 400]])
-        experiments.append([mpt, algorithm, [300, 600]])
+        experiments.append([mpt, algorithm, "100, 200"])
+        experiments.append([mpt, algorithm, "150, 300"])
+        experiments.append([mpt, algorithm, "200, 400"])
+        experiments.append([mpt, algorithm, "300, 600"])
 
 # get_existing_results()
 # parameters:
