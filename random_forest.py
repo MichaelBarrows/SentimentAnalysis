@@ -65,7 +65,7 @@ def random_forest_classifier (trees, features, training_instances_bow, training_
 #       processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
     if modifier:
-        trees, features = modifier[0], modifier[1]
+        trees, features = int(modifier[0]), int(modifier[1])
     else:
         trees, features = None, None
     predictions, metrics = random_forest_classifier(trees, features, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)

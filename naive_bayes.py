@@ -57,7 +57,7 @@ def naive_bayes_classifier (alpha, training_instances_bow, training_sentiment_sc
 #       metrics from the returned data which are then returned to the
 #       processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    predictions, metrics = naive_bayes_classifier(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+    predictions, metrics = naive_bayes_classifier(float(modifier), training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
     precision = round(metrics[0], 4)
     recall = round(metrics[1], 4)
     f_score = round(metrics[2], 4)
