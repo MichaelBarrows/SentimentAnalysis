@@ -28,7 +28,6 @@ def algorithm_single_list (algorithm_list):
     for algorithm in algorithm_list:
         if algorithm not in single_algorithm_list and algorithm != "Decision Tree":
             single_algorithm_list.append(algorithm)
-    print(single_algorithm_list)
     return single_algorithm_list
 
 # next_experiments()
