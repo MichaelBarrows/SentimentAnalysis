@@ -34,8 +34,10 @@ def get_results_filenames (version_path):
 def process_experiments (data, mpt, experiments, results_df):
     data = data[data.words_matched_percentage >= mpt]
     results = []
+    counter = 1
     for index, row in experiments.iterrows():
-        print(str(mpt) + "% - " + str(index) + " / " + str(len(experiments)))
+        print(str(mpt) + "% - " + str(counter) + " / " + str(len(experiments)))
+        counter += 1
         if row.algorithm == "KNN":
             results.append(run.run_knn_classification(data, row.hyperparameter, "experiment"))
         elif row.algorithm == "Linear SVM":
@@ -47,6 +49,7 @@ def process_experiments (data, mpt, experiments, results_df):
             results.append(run.run_random_forest_classification(data, [int(hyperparameter[0]), int(hyperparameter[1])], "experiment"))
     results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
     results_df = results_df.append(results)
+    results_df = results_df.reset_index(drop=True)
     print(results_df)
     return results_df
 
