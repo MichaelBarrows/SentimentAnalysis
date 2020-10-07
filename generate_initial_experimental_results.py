@@ -21,6 +21,7 @@ def get_results_filenames (version_path):
 #   data : DataFrame - the data containing the data for processing
 #   mpt : int - the match percentage threshold to be retained of the dataset
 #   results_df : DataFrame - The dataframe holding the existing results
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   None
 # description:
@@ -29,22 +30,22 @@ def get_results_filenames (version_path):
 #       of the dataset with a words_matched_percentage value lower than the mpt
 #       variable. The results are then stored in a list, converted (and
 #       appended) to a dataframe and stored in a CSV file.
-def get_first_experimental_results (data, mpt, results_df):
+def get_first_experimental_results (data, mpt, results_df, n_grams):
     print("--- " + str(mpt) + "% ---")
     data = data[data.words_matched_percentage >= mpt]
     results = []
 
-    results.append(run.run_knn_classification(data, 3, "initial experiment"))
-    results.append(run.run_knn_classification(data, 7, "initial experiment"))
+    results.append(run.run_knn_classification(data, 3, "initial experiment", n_grams))
+    results.append(run.run_knn_classification(data, 7, "initial experiment", n_grams))
 
-    results.append(run.run_linear_svm_classification(data, 0.8, "initial experiment"))
-    results.append(run.run_linear_svm_classification(data, 1.2, "initial experiment"))
+    results.append(run.run_linear_svm_classification(data, 0.8, "initial experiment", n_grams))
+    results.append(run.run_linear_svm_classification(data, 1.2, "initial experiment", n_grams))
 
-    results.append(run.run_naive_bayes_classification(data, 0.8, "initial experiment"))
-    results.append(run.run_naive_bayes_classification(data, 1.2, "initial experiment"))
+    results.append(run.run_naive_bayes_classification(data, 0.8, "initial experiment", n_grams))
+    results.append(run.run_naive_bayes_classification(data, 1.2, "initial experiment", n_grams))
 
-    results.append(run.run_random_forest_classification(data, [50, 100], "initial experiment"))
-    results.append(run.run_random_forest_classification(data, [75, 150], "initial experiment"))
+    results.append(run.run_random_forest_classification(data, [50, 100], "initial experiment", n_grams))
+    results.append(run.run_random_forest_classification(data, [75, 150], "initial experiment", n_grams))
 
     results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
     results_df = results_df.append(results)
@@ -54,7 +55,8 @@ def get_first_experimental_results (data, mpt, results_df):
 
 # negation_handled()
 # parameters:
-#   None
+#   folder : string - the output folder
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   None
 # description:
@@ -63,19 +65,23 @@ def get_first_experimental_results (data, mpt, results_df):
 #       (different MPT value), the results file is loaded to a dataframe and
 #       get_first_experimental_results() is called to generate the results.
 #       the new results are stored.
-def negation_handled ():
+def negation_handled (folder, n_grams):
     data = helpers.load_dataset(ds.dataset + ds.negate_dataset)
-    results_files = get_results_filenames(ds.negate_output)
-    data = helpers.load_dataset(ds.dataset + ds.negate_dataset)
+    results_files = get_results_filenames(folder)
     for results_file in results_files:
-        results_df = helpers.load_dataset(ds.negate_output + results_file)
-        results_df = get_first_experimental_results(data, int(results_file.split("_")[0]), results_df)
-        helpers.dataframe_to_csv(results_df, ds.negate_output + results_file)
+        mpt = results_file.split("_")[0]
+        if mpt == "best":
+            continue
+        mpt = int(mpt)
+        results_df = helpers.load_dataset(folder + results_file)
+        results_df = get_first_experimental_results(data, mpt, results_df, n_grams)
+        helpers.dataframe_to_csv(results_df, folder + results_file)
 
 
 # negation_not_handled()
 # parameters:
-#   None
+#   folder : string - the output folder
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   None
 # description:
@@ -84,15 +90,14 @@ def negation_handled ():
 #       (different MPT value), the results file is loaded to a dataframe and
 #       get_first_experimental_results() is called to generate the results.
 #       the new results are stored.
-def negation_not_handled ():
-    results_files = get_results_filenames(ds.not_negate_output)
+def negation_not_handled (folder, n_grams):
+    results_files = get_results_filenames(folder)
     data = helpers.load_dataset(ds.dataset + ds.not_negate_dataset)
     for results_file in results_files:
-        results_df = helpers.load_dataset(ds.not_negate_output + results_file)
-        results_df = get_first_experimental_results(data, int(results_file.split("_")[0]), results_df)
-        helpers.dataframe_to_csv(results_df, ds.not_negate_output + results_file)
-
-# execute ML for negation handled dataset
-negation_handled()
-# execute ML for negation not  handled dataset
-negation_not_handled()
+        mpt = results_file.split("_")[0]
+        if mpt == "best":
+            continue
+        mpt = int(mpt)
+        results_df = helpers.load_dataset(folder + results_file)
+        results_df = get_first_experimental_results(data, mpt, results_df, n_grams)
+        helpers.dataframe_to_csv(results_df, folder + results_file)

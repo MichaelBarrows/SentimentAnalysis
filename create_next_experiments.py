@@ -2,6 +2,8 @@ import helpers
 import dataset as ds
 import pandas as pd
 
+experiments = []
+
 # get_results_filenames()
 # parameters:
 #   version_path : string - the file path where the results files are stored
@@ -73,6 +75,7 @@ def next_experiments (mpt, algorithm, best_hyperparameter):
 # parameters:
 #   folder : str - the path for which the relevant results are stored in
 #   dataset_type : str - used for storing CSV file
+#   n_grams : string - a string detailing the n-grams for storage location
 # returns:
 #   None
 # description:
@@ -82,10 +85,13 @@ def next_experiments (mpt, algorithm, best_hyperparameter):
 #       hyperparameter sent to next_experiments() to decide which experiments
 #       should be performed next. Finally, the next experiments are converted
 #       to a DataFrame and stored in a CSV file.
-def get_existing_results (folder, dataset_type):
+def get_existing_results (folder, dataset_type, n_grams):
     global experiments
     for file in get_results_filenames(folder):
-        mpt = int(file.split("_")[0])
+        mpt = file.split("_")[0]
+        if mpt == "best":
+            continue
+        mpt = int(mpt)
         results_df = helpers.load_dataset(folder + file)
         results_df = results_df.sort_values(['f-score'],ascending=False).groupby('algorithm').head(3)
         results_df = results_df.reset_index(drop=True)
@@ -96,11 +102,9 @@ def get_existing_results (folder, dataset_type):
                 next_experiments(mpt, algorithm, row.hyperparameter)
                 break
     new_experiments_df = pd.DataFrame(experiments, columns=["mpt", "algorithm", "hyperparameter"])
-    helpers.dataframe_to_csv(new_experiments_df, "/home/michael/MRes/actual_project/sentiment_analysis/next_" + dataset_type  +"_experiments.csv")
+    helpers.dataframe_to_csv(new_experiments_df, "/home/michael/MRes/actual_project/sentiment_analysis/" + n_grams + "/next_" + dataset_type  +"_experiments.csv")
 
-# generate the next experiments for the negation handled dataset
-experiments = []
-get_existing_results(ds.negate_output, "negation_handled")
-# generate the next experiments for the negation not handled dataset
-experiments = []
-get_existing_results(ds.not_negate_output, "negation_not_handled")
+def run (folder, dataset_type, n_grams):
+    global experiments
+    experiments = []
+    get_existing_results (folder, dataset_type, n_grams)

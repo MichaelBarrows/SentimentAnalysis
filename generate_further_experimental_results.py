@@ -23,6 +23,7 @@ def get_results_filenames (version_path):
 #   experiments : DataFrame - dataframe containing details of experiments to be
 #       conducted
 #   results_df : DataFrame - dataframe containing existing results
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   results_df : DataFrame - dataframe containing existing and new results
 # description:
@@ -31,7 +32,7 @@ def get_results_filenames (version_path):
 #       the given experiment (and modifies the hyperparameter for random forest)
 #       and stores the results. The results are then added to the results df,
 #       which is then returned.
-def process_experiments (data, mpt, experiments, results_df):
+def process_experiments (data, mpt, experiments, results_df, n_grams):
     data = data[data.words_matched_percentage >= mpt]
     results = []
     counter = 1
@@ -39,14 +40,14 @@ def process_experiments (data, mpt, experiments, results_df):
         print(str(mpt) + "% - " + str(counter) + " / " + str(len(experiments)) + " " + row.algorithm + " - " + str(row.hyperparameter))
         counter += 1
         if row.algorithm == "KNN":
-            results.append(run.run_knn_classification(data, row.hyperparameter, "experiment"))
+            results.append(run.run_knn_classification(data, row.hyperparameter, "experiment", n_grams))
         elif row.algorithm == "Linear SVM":
-            results.append(run.run_linear_svm_classification(data, row.hyperparameter, "experiment"))
+            results.append(run.run_linear_svm_classification(data, row.hyperparameter, "experiment", n_grams))
         elif row.algorithm == "Naive Bayes":
-            results.append(run.run_naive_bayes_classification(data, row.hyperparameter, "experiment"))
+            results.append(run.run_naive_bayes_classification(data, row.hyperparameter, "experiment", n_grams))
         elif row.algorithm == "Random Forest":
             hyperparameter = row.hyperparameter.split(', ')
-            results.append(run.run_random_forest_classification(data, [int(hyperparameter[0]), int(hyperparameter[1])], "experiment"))
+            results.append(run.run_random_forest_classification(data, [int(hyperparameter[0]), int(hyperparameter[1])], "experiment", n_grams))
     results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
     results_df = results_df.append(results)
     results_df = results_df.reset_index(drop=True)
@@ -55,7 +56,8 @@ def process_experiments (data, mpt, experiments, results_df):
 
 # process_negation_handled_experiments()
 # parameters:
-#   None
+#   folder : string - the output folder
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   None
 # description:
@@ -64,21 +66,25 @@ def process_experiments (data, mpt, experiments, results_df):
 #       the results data for the given MPT imported and experiments within that
 #       MPT are retained. The process_experiments() function is then called to
 #       execute the experiments, and the results data is stored.
-def process_negation_handled_experiments ():
-    results_files = get_results_filenames(ds.negate_output)
+def process_negation_handled_experiments (folder, n_grams):
+    results_files = get_results_filenames(folder)
     data = helpers.load_dataset(ds.dataset + ds.negate_dataset)
-    experiments_df = helpers.load_dataset("/home/michael/MRes/actual_project/sentiment_analysis/next_negation_handled_experiments.csv")
+    experiments_df = helpers.load_dataset("/home/michael/MRes/actual_project/sentiment_analysis/" + n_grams + "/next_negation_handled_experiments.csv")
     for results_filename in results_files:
-        mpt = int(results_filename.split("_")[0])
+        mpt = results_filename.split("_")[0]
+        if mpt == "best":
+            continue
+        mpt = int(mpt)
         experiments = experiments_df[experiments_df.mpt == mpt]
-        results_df = helpers.load_dataset(ds.negate_output + results_filename)
-        results_df = process_experiments(data, mpt, experiments, results_df)
-        helpers.dataframe_to_csv(results_df, ds.negate_output + results_filename)
+        results_df = helpers.load_dataset(folder + results_filename)
+        results_df = process_experiments(data, mpt, experiments, results_df, n_grams)
+        helpers.dataframe_to_csv(results_df, folder + results_filename)
     return
 
 # process_negation_not_handled_experiments()
 # parameters:
-#   None
+#   folder : string - the output folder
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   None
 # description:
@@ -87,19 +93,17 @@ def process_negation_handled_experiments ():
 #       the results data for the given MPT imported and experiments within that
 #       MPT are retained. The process_experiments() function is then called to
 #       execute the experiments, and the results data is stored.
-def process_negation_not_handled_experiments ():
-    results_files = get_results_filenames(ds.not_negate_output)
+def process_negation_not_handled_experiments (folder, n_grams):
+    results_files = get_results_filenames(folder)
     data = helpers.load_dataset(ds.dataset + ds.not_negate_dataset)
-    experiments_df = helpers.load_dataset("/home/michael/MRes/actual_project/sentiment_analysis/next_negation_not_handled_experiments.csv")
+    experiments_df = helpers.load_dataset("/home/michael/MRes/actual_project/sentiment_analysis/" + n_grams + "/next_negation_not_handled_experiments.csv")
     for results_filename in results_files:
-        mpt = int(results_filename.split("_")[0])
+        mpt = results_filename.split("_")[0]
+        if mpt == "best":
+            continue
+        mpt = int(mpt)
         experiments = experiments_df[experiments_df.mpt == mpt]
-        results_df = helpers.load_dataset(ds.not_negate_output + results_filename)
-        results_df = process_experiments(data, mpt, experiments, results_df)
-        helpers.dataframe_to_csv(results_df, ds.not_negate_output + results_filename)
+        results_df = helpers.load_dataset(folder + results_filename)
+        results_df = process_experiments(data, mpt, experiments, results_df, n_grams)
+        helpers.dataframe_to_csv(results_df, folder + results_filename)
     return
-
-# execute negation handled experiments
-process_negation_handled_experiments()
-# execute negation not handled experiments
-process_negation_not_handled_experiments()
