@@ -26,7 +26,7 @@ from sklearn.metrics import precision_recall_fscore_support
 #       are then returned.
 def linear_svm_classifier (c_value, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
     if c_value:
-        classifier = LinearSVC(C=c_value, max_iter=10000)
+        classifier = LinearSVC(C=float(c_value), max_iter=10000)
     else:
         classifier = LinearSVC(max_iter=10000)
     classifier.fit(X=training_instances_bow, y=training_sentiment_scores)
@@ -57,7 +57,7 @@ def linear_svm_classifier (c_value, training_instances_bow, training_sentiment_s
 #       metrics from the returned data which are then returned to the
 #       processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    predictions, metrics = linear_svm_classifier(float(modifier), training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+    predictions, metrics = linear_svm_classifier(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
     precision = round(metrics[0], 4)
     recall = round(metrics[1], 4)
     f_score = round(metrics[2], 4)

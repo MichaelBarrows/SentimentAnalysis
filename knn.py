@@ -27,7 +27,7 @@ from sklearn.metrics import precision_recall_fscore_support
 #       are then returned.
 def k_nearest_neighbours_classifier (neighbours, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
     if neighbours:
-        classifier = KNeighborsClassifier(n_neighbors=neighbours)
+        classifier = KNeighborsClassifier(n_neighbors=int(neighbours))
     else:
         classifier = KNeighborsClassifier()
     classifier.fit(training_instances_bow, training_sentiment_scores)
@@ -59,7 +59,7 @@ def k_nearest_neighbours_classifier (neighbours, training_instances_bow, trainin
 #       extracts the metrics from the returned data which are then returned to
 #       the processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
-    predictions, metrics = k_nearest_neighbours_classifier(int(modifier), training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+    predictions, metrics = k_nearest_neighbours_classifier(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
     precision = round(metrics[0], 4)
     recall = round(metrics[1], 4)
     f_score = round(metrics[2], 4)
