@@ -1,5 +1,5 @@
 from sklearn.model_selection import KFold
-from sklearn.feature_extraction.text import CountVectorizer
+import bag_of_ngrams
 import knn
 import decision_tree
 import random_forest
@@ -13,6 +13,7 @@ import linear_svm
 #       algorithm
 #   n_folds : integer - the number of folds that the data will be split into
 #   df : DataFrame - a dataframe containing the data to be split and used
+#   n_grams : string - string detailing the number of n-grams to be used
 # returns:
 #   precision : float - a metric representing how precise the algorithm is
 #       (true positives / true positives + false positives)
@@ -23,10 +24,11 @@ import linear_svm
 # description:
 #   This function implements the process of splitting data into folds for
 #       training and testing, extracting the text and sentiment labels,
-#       converting the text to a bag of words representation. This function then
-#       calls the relevant algorithm to be used, averaging the precisions,
-#       recalls and f_scores across all of the folds to return the final metrics.
-def data_split_bow_run (algorithm, modifier, n_folds, df):
+#       converting the text to a bag of n-grams representation
+#       (by calling bag_of_ngrams(n_grams)). This function then calls the
+#       relevant algorithm to be used, averaging the precisions, recalls and
+#       f_scores across all of the folds to return the final metrics.
+def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
     kf = KFold(n_splits=n_folds)
     for training_index, test_index in kf.split(df.index.tolist()):
         training_ids, training_texts, training_sentiment_scores  = [], [], []
@@ -41,14 +43,14 @@ def data_split_bow_run (algorithm, modifier, n_folds, df):
                 test_texts.append(str(row.preprocessed_tweet_text))
                 test_sentiment_scores.append(str(row.sentiment_class))
 
-        training_vectorizer = CountVectorizer()
-        training_vectorizer.fit(training_texts)
-        training_instances_bow = training_vectorizer.transform(training_texts)
-
-        # convert test text reviews into bag-of-words (bow)
-        test_vectorizer = CountVectorizer(vocabulary=training_vectorizer.get_feature_names())
-        test_vectorizer.fit(test_texts)
-        test_instances_bow = test_vectorizer.fit_transform(test_texts)
+        if n_grams == "unigrams":
+            training_instances_bow, test_instances_bow = bag_of_ngrams.unigrams(training_texts, test_texts)
+        elif n_grams == "bigrams":
+            training_instances_bow, test_instances_bow = bag_of_ngrams.bigrams(training_texts, test_texts)
+        elif n_grams == "trigrams":
+            training_instances_bow, test_instances_bow = bag_of_ngrams.trigrams(training_texts, test_texts)
+        else:
+            return
 
         # call algorithm
         precision = []
