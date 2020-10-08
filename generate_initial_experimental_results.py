@@ -46,8 +46,24 @@ def get_first_experimental_results (data, mpt, results_df, n_grams):
 
     results.append(run.run_random_forest_classification(data, [50, 100], "initial experiment", n_grams))
     results.append(run.run_random_forest_classification(data, [75, 150], "initial experiment", n_grams))
-
-    results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
+    columns = ["algorithm",
+            "hyperparameter",
+            "weighted_avg_precision",
+            "weighted_avg_recall",
+            "weighted_avg_f1-score",
+            "accuracy",
+            "experiment_type",
+            "metric_dump_id",
+            "positive_precision",
+            "positive_recall",
+            "positive_f1-score",
+            "neutral_precision",
+            "neutral_recall",
+            "neutral_f1-score",
+            "negative_precision",
+            "negative_recall",
+            "negative_f1-score"]
+    results = pd.DataFrame(results, columns=columns)
     results_df = results_df.append(results)
 
     print(results_df)

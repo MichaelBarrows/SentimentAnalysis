@@ -27,8 +27,24 @@ def get_baseline_results (data, mpt, output_folder, n_grams):
     results.append(run.run_linear_svm_classification(data, None, "baseline", n_grams))
     results.append(run.run_naive_bayes_classification(data, None, "baseline", n_grams))
     results.append(run.run_random_forest_classification(data, None, "baseline", n_grams))
-
-    results_df = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
+    columns = ["algorithm",
+            "hyperparameter",
+            "weighted_avg_precision",
+            "weighted_avg_recall",
+            "weighted_avg_f1-score",
+            "accuracy",
+            "experiment_type",
+            "metric_dump_id",
+            "positive_precision",
+            "positive_recall",
+            "positive_f1-score",
+            "neutral_precision",
+            "neutral_recall",
+            "neutral_f1-score",
+            "negative_precision",
+            "negative_recall",
+            "negative_f1-score"]
+    results_df = pd.DataFrame(results, columns=columns)
     helpers.dataframe_to_csv(results_df, output_folder + str(mpt) + "_mpt_results.csv")
     print(results_df)
 

@@ -48,7 +48,24 @@ def process_experiments (data, mpt, experiments, results_df, n_grams):
         elif row.algorithm == "Random Forest":
             hyperparameter = row.hyperparameter.split(', ')
             results.append(run.run_random_forest_classification(data, [int(hyperparameter[0]), int(hyperparameter[1])], "experiment", n_grams))
-    results = pd.DataFrame(results, columns=["algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
+    columns = ["algorithm",
+            "hyperparameter",
+            "weighted_avg_precision",
+            "weighted_avg_recall",
+            "weighted_avg_f1-score",
+            "accuracy",
+            "experiment_type",
+            "metric_dump_id",
+            "positive_precision",
+            "positive_recall",
+            "positive_f1-score",
+            "neutral_precision",
+            "neutral_recall",
+            "neutral_f1-score",
+            "negative_precision",
+            "negative_recall",
+            "negative_f1-score"]
+    results = pd.DataFrame(results, columns=columns)
     results_df = results_df.append(results)
     results_df = results_df.reset_index(drop=True)
     print(results_df)

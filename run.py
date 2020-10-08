@@ -16,10 +16,26 @@ n_folds = 10
 #       of the execution are then returned returned.
 def run_knn_classification (df, hyperparameter, experiment_type, n_grams):
     global n_folds
-    data = processor.data_split_bow_run("knn", hyperparameter, n_folds, df, n_grams)
+    metric_id, positive, neutral, negative, weighted_avg, accuracy = processor.data_split_bow_run("knn", hyperparameter, n_folds, df, n_grams)
     if not hyperparameter:
         hyperparameter = "default"
-    return ["KNN", hyperparameter, data[0], data[1], data[2], experiment_type]
+    return ["KNN",
+            hyperparameter,
+            weighted_avg[0],
+            weighted_avg[1],
+            weighted_avg[2],
+            accuracy,
+            experiment_type,
+            metric_id,
+            positive[0],
+            positive[1],
+            positive[2],
+            neutral[0],
+            neutral[1],
+            neutral[2],
+            negative[0],
+            negative[1],
+            negative[2]]
 
 # run_decision_tree_classification()
 # parameters:
@@ -34,8 +50,24 @@ def run_knn_classification (df, hyperparameter, experiment_type, n_grams):
 #       execution are then returned returned.
 def run_decision_tree_classification (df, experiment_type, n_grams):
     global n_folds
-    data = processor.data_split_bow_run("decision_tree", None, n_folds, df, n_grams)
-    return ['Decision Tree', "default", data[0], data[1], data[2], experiment_type]
+    metric_id, positive, neutral, negative, weighted_avg, accuracy = processor.data_split_bow_run("decision_tree", None, n_folds, df, n_grams)
+    return ["Decision Tree",
+            "default",
+            weighted_avg[0],
+            weighted_avg[1],
+            weighted_avg[2],
+            accuracy,
+            experiment_type,
+            metric_id,
+            positive[0],
+            positive[1],
+            positive[2],
+            neutral[0],
+            neutral[1],
+            neutral[2],
+            negative[0],
+            negative[1],
+            negative[2]]
 
 # run_random_forest_classification()
 # parameters:
@@ -51,11 +83,26 @@ def run_decision_tree_classification (df, experiment_type, n_grams):
 #       execution are then returned returned.
 def run_random_forest_classification (df, hyperparameters, experiment_type, n_grams):
     global n_folds
-    data = processor.data_split_bow_run("random_forest", hyperparameters, n_folds, df, n_grams)
+    metric_id, positive, neutral, negative, weighted_avg, accuracy = processor.data_split_bow_run("random_forest", hyperparameters, n_folds, df, n_grams)
     if not hyperparameters:
         hyperparameters = "default"
-    return ["Random Forest", hyperparameters, data[0], data[1], data[2], experiment_type]
-
+    return ["Random Forest",
+            hyperparameters,
+            weighted_avg[0],
+            weighted_avg[1],
+            weighted_avg[2],
+            accuracy,
+            experiment_type,
+            metric_id,
+            positive[0],
+            positive[1],
+            positive[2],
+            neutral[0],
+            neutral[1],
+            neutral[2],
+            negative[0],
+            negative[1],
+            negative[2]]
 
 # run_naive_bayes_classification()
 # parameters:
@@ -71,10 +118,26 @@ def run_random_forest_classification (df, hyperparameters, experiment_type, n_gr
 #       execution are then returned returned.
 def run_naive_bayes_classification (df, hyperparameter, experiment_type, n_grams):
     global n_folds
-    data = processor.data_split_bow_run("naive_bayes", hyperparameter, n_folds, df, n_grams)
+    metric_id, positive, neutral, negative, weighted_avg, accuracy = processor.data_split_bow_run("naive_bayes", hyperparameter, n_folds, df, n_grams)
     if not hyperparameter:
         hyperparameter = "default"
-    return ["Naive Bayes", hyperparameter, data[0], data[1], data[2], experiment_type]
+    return ["Naive Bayes",
+            hyperparameter,
+            weighted_avg[0],
+            weighted_avg[1],
+            weighted_avg[2],
+            accuracy,
+            experiment_type,
+            metric_id,
+            positive[0],
+            positive[1],
+            positive[2],
+            neutral[0],
+            neutral[1],
+            neutral[2],
+            negative[0],
+            negative[1],
+            negative[2]]
 
 # run_linear_svm_classification()
 # parameters:
@@ -90,7 +153,23 @@ def run_naive_bayes_classification (df, hyperparameter, experiment_type, n_grams
 #       algorithm. The results of the execution are then returned returned.
 def run_linear_svm_classification (df, hyperparameter, experiment_type, n_grams):
     global n_folds
-    data = processor.data_split_bow_run("linear_svm", hyperparameter, n_folds, df, n_grams)
+    metric_id, positive, neutral, negative, weighted_avg, accuracy = processor.data_split_bow_run("linear_svm", hyperparameter, n_folds, df, n_grams)
     if not hyperparameter:
         hyperparameter = "default"
-    return ["Linear SVM", hyperparameter, data[0], data[1], data[2], experiment_type]
+    return ["Linear SVM",
+            hyperparameter,
+            weighted_avg[0],
+            weighted_avg[1],
+            weighted_avg[2],
+            accuracy,
+            experiment_type,
+            metric_id,
+            positive[0],
+            positive[1],
+            positive[2],
+            neutral[0],
+            neutral[1],
+            neutral[2],
+            negative[0],
+            negative[1],
+            negative[2]]

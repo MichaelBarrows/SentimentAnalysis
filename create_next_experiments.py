@@ -93,7 +93,7 @@ def get_existing_results (folder, dataset_type, n_grams):
             continue
         mpt = int(mpt)
         results_df = helpers.load_dataset(folder + file)
-        results_df = results_df.sort_values(['f-score'],ascending=False).groupby('algorithm').head(3)
+        results_df = results_df.sort_values(['weighted_avg_f1-score'],ascending=False).groupby('algorithm').head(3)
         results_df = results_df.reset_index(drop=True)
         algorithms = algorithm_single_list(results_df.algorithm.tolist())
         for algorithm in algorithms:

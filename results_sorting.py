@@ -34,12 +34,47 @@ def import_results (folder):
             continue
         mpt = int(mpt)
         results_df = helpers.load_dataset(folder + file)
-        results_df = results_df.sort_values(['f-score'],ascending=False)
+        results_df = results_df.sort_values(['weighted_avg_f1-score'],ascending=False)
         results_df = results_df.reset_index(drop=True)
         for index, row in results_df.iterrows():
-            new_results.append([mpt, row.algorithm, row.hyperparameter, row.precision, row.recall, row['f-score'], row.experiment_type])
+            new_results.append([mpt,
+                                row.algorithm,
+                                row.hyperparameter,
+                                row.weighted_avg_precision,
+                                row.weighted_avg_recall,
+                                row["weighted_avg_f1-score"],
+                                row.accuracy,
+                                row.experiment_type,
+                                row.metric_dump_id,
+                                row.positive_precision,
+                                row.positive_recall,
+                                row["positive_f1-score"],
+                                row.neutral_precision,
+                                row.neutral_recall,
+                                row["neutral_f1-score"],
+                                row.negative_precision,
+                                row.negative_recall,
+                                row["negative_f1-score"]])
             break
-    new_results_df = pd.DataFrame(new_results, columns=["mpt", "algorithm", "hyperparameter", "precision", "recall", "f-score", "experiment_type"])
+    columns = ["mpt",
+            "algorithm",
+            "hyperparameter",
+            "weighted_avg_precision",
+            "weighted_avg_recall",
+            "weighted_avg_f1-score",
+            "accuracy",
+            "experiment_type",
+            "metric_dump_id",
+            "positive_precision",
+            "positive_recall",
+            "positive_f1-score",
+            "neutral_precision",
+            "neutral_recall",
+            "neutral_f1-score",
+            "negative_precision",
+            "negative_recall",
+            "negative_f1-score"]
+    new_results_df = pd.DataFrame(new_results, columns=columns)
     helpers.dataframe_to_csv(new_results_df, folder + "best_result_per_mpt.csv")
 
 # import import_best_results_and_sort()
@@ -53,6 +88,6 @@ def import_results (folder):
 #       dataframe
 def import_best_results_and_sort (folder):
     best_results_df = helpers.load_dataset(folder + "best_result_per_mpt.csv")
-    best_results_df = best_results_df.sort_values(['f-score'],ascending=False)
+    best_results_df = best_results_df.sort_values(['weighted_avg_f1-score'],ascending=False)
     best_results_df = best_results_df.reset_index(drop=True)
     helpers.dataframe_to_csv(best_results_df, folder + "best_result_per_mpt_sorted.csv")
