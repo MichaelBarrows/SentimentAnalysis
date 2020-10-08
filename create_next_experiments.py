@@ -2,7 +2,7 @@ import helpers
 import dataset as ds
 import pandas as pd
 
-experiments = []
+
 
 # get_results_filenames()
 # parameters:
@@ -38,14 +38,15 @@ def algorithm_single_list (algorithm_list):
 #   algorithm : string - the algorithm name
 #   best_hyperparameter : string/int/float - The hyperparameter for the
 #       algorithm that perfomed best.
+#   experiments : list - a list for the experiments to be stored in
 # returns:
-#   None
+#   experiments : list - a list of the experiments to be executed
 # description:
 #   This function takes the best performing hyperparameter for a given algorithm
 #       and uses this to determine the experiments that should be run next.
 #       This is only in relation to Linear SVM and Naive Bayes. The next
 #       experiments are added to a global list.
-def next_experiments (mpt, algorithm, best_hyperparameter):
+def next_experiments (mpt, algorithm, best_hyperparameter, experiments):
     if algorithm == "KNN":
         experiments.append([mpt, algorithm, 1])
         experiments.append([mpt, algorithm, 9])
@@ -70,6 +71,7 @@ def next_experiments (mpt, algorithm, best_hyperparameter):
         experiments.append([mpt, algorithm, "150, 300"])
         experiments.append([mpt, algorithm, "200, 400"])
         experiments.append([mpt, algorithm, "300, 600"])
+    return experiments
 
 # get_existing_results()
 # parameters:
@@ -86,7 +88,7 @@ def next_experiments (mpt, algorithm, best_hyperparameter):
 #       should be performed next. Finally, the next experiments are converted
 #       to a DataFrame and stored in a CSV file.
 def get_existing_results (folder, dataset_type, n_grams):
-    global experiments
+    experiments = []
     for file in get_results_filenames(folder):
         mpt = file.split("_")[0]
         if mpt == "best":
@@ -99,12 +101,10 @@ def get_existing_results (folder, dataset_type, n_grams):
         for algorithm in algorithms:
             relevant_rows = results_df[results_df.algorithm == algorithm]
             for index, row in relevant_rows.iterrows():
-                next_experiments(mpt, algorithm, row.hyperparameter)
+                experiments = next_experiments(mpt, algorithm, row.hyperparameter, experiments)
                 break
     new_experiments_df = pd.DataFrame(experiments, columns=["mpt", "algorithm", "hyperparameter"])
     helpers.dataframe_to_csv(new_experiments_df, "/home/michael/MRes/actual_project/sentiment_analysis/" + n_grams + "/next_" + dataset_type  +"_experiments.csv")
 
 def run (folder, dataset_type, n_grams):
-    global experiments
-    experiments = []
     get_existing_results (folder, dataset_type, n_grams)
