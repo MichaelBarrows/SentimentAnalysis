@@ -2,8 +2,6 @@ import helpers
 import dataset as ds
 import pandas as pd
 
-
-
 # get_results_filenames()
 # parameters:
 #   version_path : string - the file path where the results files are stored
