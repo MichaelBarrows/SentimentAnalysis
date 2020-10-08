@@ -15,8 +15,7 @@ from sklearn.metrics import classification_report
 # returns:
 #   predicted_test_sentiment_scores : list - list of the predictions made by the
 #       classifier
-#   precision_recall_fscore_support() : tuple - the precision, recall, f_score
-#       and support values
+#   metrics : dict - a dictionary containing results metrics
 # description:
 #   This function implements the Naive Bayes classification algorithm, and
 #       trains it on the training data (training_instances_bow). Once the
@@ -46,12 +45,7 @@ def naive_bayes_classifier (alpha, training_instances_bow, training_sentiment_sc
 #       each test instance in reference to all words in all test instances
 #   test_sentiment_scores : list - list of sentiment labels for the test data
 # returns:
-#   precision : float - a metric representing how precise the algorithm is
-#       (true positives / true positives + false positives)
-#   recall : float - a metric representing how recalling the algorithm is
-#       (true positives / true positives + false negatives)
-#   f_score : float - a combination of precision and recall
-#       ((precision * recall) / (precision + recall)) * 2
+#   metrics : dict - a dictionary containing results metrics
 # description:
 #   This function takes the parameters required for the algorithm to run, calls
 #       the classification function (naive_bayes_classifier()) and extracts the
