@@ -5,6 +5,7 @@ import decision_tree
 import random_forest
 import naive_bayes
 import linear_svm
+import metric_storage
 
 # data_split_bow_run()
 # parameters:
@@ -30,6 +31,13 @@ import linear_svm
 #       f_scores across all of the folds to return the final metrics.
 def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
     kf = KFold(n_splits=n_folds)
+    metrics_dict = {"Positive": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
+                    "Neutral": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
+                    "Negative": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
+                    "macro avg": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
+                    "weighted avg": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
+                    "accuracy": {"list": [], "avg": 0}}
+
     for training_index, test_index in kf.split(df.index.tolist()):
         training_ids, training_texts, training_sentiment_scores  = [], [], []
         test_ids, test_texts, test_sentiment_scores = [], [], []
@@ -57,25 +65,46 @@ def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
         recall = []
         f_score = []
         if algorithm == "knn":
-            precision_data, recall_data, f_score_data = knn.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+            metrics = knn.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         elif algorithm == "decision_tree":
-            precision_data, recall_data, f_score_data = decision_tree.run(training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+            metrics = decision_tree.run(training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         elif algorithm == "random_forest":
-            precision_data, recall_data, f_score_data = random_forest.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+            metrics = random_forest.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         elif algorithm == "naive_bayes":
-            precision_data, recall_data, f_score_data = naive_bayes.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+            metrics = naive_bayes.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         elif algorithm == "linear_svm":
-            precision_data, recall_data, f_score_data = linear_svm.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
+            metrics = linear_svm.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         else:
             return
+        # exit()
+        for key in metrics:
+            if key in metrics_dict:
+                if key == "accuracy":
+                    metrics_dict[key]["list"].append(metrics[key])
+                    continue
+                metrics_dict[key]["precision"].append(metrics[key]["precision"])
+                metrics_dict[key]["recall"].append(metrics[key]["recall"])
+                metrics_dict[key]["f1-score"].append(metrics[key]["f1-score"])
+                metrics_dict[key]["support"].append(metrics[key]["support"])
 
-        precision.append(precision_data)
-        recall.append(recall_data)
-        f_score.append(f_score_data)
-    precision = average(precision)
-    recall = average(recall)
-    f_score = average(f_score)
-    return precision, recall, f_score
+    # print("---")
+    for key in metrics_dict:
+        if key == "accuracy":
+            metrics_dict[key]["avg"] = average(metrics_dict[key]["list"])
+            continue
+        metrics_dict[key]["avg"]["precision"] = average(metrics_dict[key]["precision"])
+        metrics_dict[key]["avg"]["recall"] = average(metrics_dict[key]["recall"])
+        metrics_dict[key]["avg"]["f1-score"] = average(metrics_dict[key]["f1-score"])
+        metrics_dict[key]["avg"]["support"] = average(metrics_dict[key]["support"])
+    # print("---")
+    # print(metrics_dict)
+    metric_id = metric_storage.store_metrics(metrics_dict, algorithm, modifier, n_grams)
+    positive = [metrics_dict["Positive"]["avg"]["precision"], metrics_dict["Positive"]["avg"]["recall"], metrics_dict["Positive"]["avg"]["f1-score"]]
+    neutral = [metrics_dict["Neutral"]["avg"]["precision"], metrics_dict["Neutral"]["avg"]["recall"], metrics_dict["Neutral"]["avg"]["f1-score"]]
+    negative = [metrics_dict["Negative"]["avg"]["precision"], metrics_dict["Negative"]["avg"]["recall"], metrics_dict["Negative"]["avg"]["f1-score"]]
+    weighted_avg = [metrics_dict["weighted avg"]["avg"]["precision"], metrics_dict["weighted avg"]["avg"]["recall"], metrics_dict["weighted avg"]["avg"]["f1-score"]]
+    accuracy = metrics_dict["accuracy"]["avg"]
+    return metric_id, positive, neutral, negative, weighted_avg, accuracy
 
 # average():
 # parameters:

@@ -1,5 +1,5 @@
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import precision_recall_fscore_support
+from sklearn.metrics import classification_report
 
 # naive_bayes_classifier()
 # parameters:
@@ -31,7 +31,8 @@ def naive_bayes_classifier (alpha, training_instances_bow, training_sentiment_sc
         classifier = MultinomialNB()
     classifier.fit(training_instances_bow, training_sentiment_scores)
     predicted_test_sentiment_scores = classifier.predict(test_instances_bow)
-    return predicted_test_sentiment_scores, precision_recall_fscore_support(test_sentiment_scores, predicted_test_sentiment_scores, average='weighted')
+    metrics = classification_report(test_sentiment_scores, predicted_test_sentiment_scores, digits=4, output_dict=True)
+    return predicted_test_sentiment_scores, metrics
 
 # run()
 # parameters:
@@ -58,7 +59,4 @@ def naive_bayes_classifier (alpha, training_instances_bow, training_sentiment_sc
 #       processor.data_split_bow_run() function.
 def run (modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores):
     predictions, metrics = naive_bayes_classifier(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
-    precision = round(metrics[0], 4)
-    recall = round(metrics[1], 4)
-    f_score = round(metrics[2], 4)
-    return precision, recall, f_score
+    return metrics
