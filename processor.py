@@ -16,19 +16,22 @@ import metric_storage
 #   df : DataFrame - a dataframe containing the data to be split and used
 #   n_grams : string - string detailing the number of n-grams to be used
 # returns:
-#   precision : float - a metric representing how precise the algorithm is
-#       (true positives / true positives + false positives)
-#   recall : float - a metric representing how recalling the algorithm is
-#       (true positives / true positives + false negatives)
-#   f_score : float - a combination of precision and recall
-#       ((precision * recall) / (precision + recall)) * 2
+#   metric_id : int - a number representing the file metrics were stored in
+#   positive : list - a list containing the precision, recall and f1-score for
+#       the positive class
+#   neutral : list - a list containing the precision, recall and f1-score for
+#       the neutral class
+#   negative : list - a list containing the precision, recall and f1-score for
+#       the negative class
+#   weighted_avg : list - a list containing the precision, recall and f1-score
+#       averaged across the classes
+#   accuracy : int - the accuracy of the algorithm
 # description:
 #   This function implements the process of splitting data into folds for
 #       training and testing, extracting the text and sentiment labels,
 #       converting the text to a bag of n-grams representation
 #       (by calling bag_of_ngrams(n_grams)). This function then calls the
-#       relevant algorithm to be used, averaging the precisions, recalls and
-#       f_scores across all of the folds to return the final metrics.
+#       relevant algorithm to be used, returning the metrics for storage.
 def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
     kf = KFold(n_splits=n_folds)
     metrics_dict = {"Positive": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
@@ -76,7 +79,7 @@ def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
             metrics = linear_svm.run(modifier, training_instances_bow, training_sentiment_scores, test_instances_bow, test_sentiment_scores)
         else:
             return
-        # exit()
+
         for key in metrics:
             if key in metrics_dict:
                 if key == "accuracy":
@@ -87,7 +90,6 @@ def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
                 metrics_dict[key]["f1-score"].append(metrics[key]["f1-score"])
                 metrics_dict[key]["support"].append(metrics[key]["support"])
 
-    # print("---")
     for key in metrics_dict:
         if key == "accuracy":
             metrics_dict[key]["avg"] = average(metrics_dict[key]["list"])
@@ -96,8 +98,6 @@ def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
         metrics_dict[key]["avg"]["recall"] = average(metrics_dict[key]["recall"])
         metrics_dict[key]["avg"]["f1-score"] = average(metrics_dict[key]["f1-score"])
         metrics_dict[key]["avg"]["support"] = average(metrics_dict[key]["support"])
-    # print("---")
-    # print(metrics_dict)
     metric_id = metric_storage.store_metrics(metrics_dict, algorithm, modifier, n_grams)
     positive = [metrics_dict["Positive"]["avg"]["precision"], metrics_dict["Positive"]["avg"]["recall"], metrics_dict["Positive"]["avg"]["f1-score"]]
     neutral = [metrics_dict["Neutral"]["avg"]["precision"], metrics_dict["Neutral"]["avg"]["recall"], metrics_dict["Neutral"]["avg"]["f1-score"]]
