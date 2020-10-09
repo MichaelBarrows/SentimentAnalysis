@@ -60,6 +60,10 @@ def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
             training_instances_bow, test_instances_bow = bag_of_ngrams.bigrams(training_texts, test_texts)
         elif n_grams == "trigrams":
             training_instances_bow, test_instances_bow = bag_of_ngrams.trigrams(training_texts, test_texts)
+        elif n_grams == "unigrams_bigrams":
+            training_instances_bow, test_instances_bow = bag_of_ngrams.unigrams_and_bigrams(training_texts, test_texts)
+        elif n_grams == "unigrams_bigrams_trigrams":
+            training_instances_bow, test_instances_bow = bag_of_ngrams.unigrams_bigrams_and_trigrams(training_texts, test_texts)
         else:
             return
 
