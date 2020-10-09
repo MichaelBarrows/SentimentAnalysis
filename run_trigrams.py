@@ -32,7 +32,7 @@ def execute_negated_dataset ():
 # returns:
 #   None
 # description:
-#   This function calls and executes all code linked to the negation not handled 
+#   This function calls and executes all code linked to the negation not handled
 #       dataset for trigrams
 def execute_not_negated_dataset ():
     # Generate the baseline results for trigrams
