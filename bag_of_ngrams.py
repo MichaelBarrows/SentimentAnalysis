@@ -73,7 +73,7 @@ def trigrams (training_texts, test_texts):
 # description:
 #   This function converts a list of training texts and test texts into their
 #       bag of n-grams (unigrams and bigrams) representations and returns them.
-def unigrams_and_bigrams (training_texts, text_texts):
+def unigrams_and_bigrams (training_texts, test_texts):
     training_vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, 2))
     training_vectorizer.fit(training_texts)
     training_instances_bow = training_vectorizer.transform(training_texts)
@@ -95,7 +95,7 @@ def unigrams_and_bigrams (training_texts, text_texts):
 #   This function converts a list of training texts and test texts into their
 #       bag of n-grams (unigrams, bigrams and trigrams) representations and
 #       returns them.
-def unigrams_bigrams_and_trigrams (training_texts, text_texts):
+def unigrams_bigrams_and_trigrams (training_texts, test_texts):
     training_vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, 3))
     training_vectorizer.fit(training_texts)
     training_instances_bow = training_vectorizer.transform(training_texts)
