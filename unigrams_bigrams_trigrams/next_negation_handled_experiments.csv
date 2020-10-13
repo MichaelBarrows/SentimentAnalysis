@@ -1,0 +1,137 @@
+"mpt","algorithm","hyperparameter"
+0,"Linear SVM",0.5
+0,"Linear SVM",0.3
+0,"Linear SVM",1.5
+0,"Random Forest","100, 200"
+0,"Random Forest","150, 300"
+0,"Random Forest","200, 400"
+0,"Random Forest","300, 600"
+0,"Naive Bayes",0.5
+0,"Naive Bayes",0.3
+0,"Naive Bayes",1.5
+0,"KNN",1
+0,"KNN",9
+0,"KNN",11
+10,"Linear SVM",0.5
+10,"Linear SVM",0.3
+10,"Linear SVM",1.5
+10,"Random Forest","100, 200"
+10,"Random Forest","150, 300"
+10,"Random Forest","200, 400"
+10,"Random Forest","300, 600"
+10,"Naive Bayes",0.5
+10,"Naive Bayes",0.3
+10,"Naive Bayes",1.5
+10,"KNN",1
+10,"KNN",9
+10,"KNN",11
+20,"Linear SVM",0.3
+20,"Linear SVM",0.5
+20,"Linear SVM",1.5
+20,"Linear SVM",1.8
+20,"Random Forest","100, 200"
+20,"Random Forest","150, 300"
+20,"Random Forest","200, 400"
+20,"Random Forest","300, 600"
+20,"Naive Bayes",0.5
+20,"Naive Bayes",0.3
+20,"Naive Bayes",1.5
+20,"KNN",1
+20,"KNN",9
+20,"KNN",11
+30,"Linear SVM",0.3
+30,"Linear SVM",0.5
+30,"Linear SVM",1.5
+30,"Linear SVM",1.8
+30,"Random Forest","100, 200"
+30,"Random Forest","150, 300"
+30,"Random Forest","200, 400"
+30,"Random Forest","300, 600"
+30,"Naive Bayes",0.3
+30,"Naive Bayes",0.5
+30,"Naive Bayes",1.5
+30,"Naive Bayes",1.8
+30,"KNN",1
+30,"KNN",9
+30,"KNN",11
+40,"Linear SVM",0.3
+40,"Linear SVM",0.5
+40,"Linear SVM",1.5
+40,"Linear SVM",1.8
+40,"Random Forest","100, 200"
+40,"Random Forest","150, 300"
+40,"Random Forest","200, 400"
+40,"Random Forest","300, 600"
+40,"Naive Bayes",0.5
+40,"Naive Bayes",0.3
+40,"Naive Bayes",1.5
+40,"KNN",1
+40,"KNN",9
+40,"KNN",11
+50,"Linear SVM",0.5
+50,"Linear SVM",0.3
+50,"Linear SVM",1.5
+50,"Random Forest","100, 200"
+50,"Random Forest","150, 300"
+50,"Random Forest","200, 400"
+50,"Random Forest","300, 600"
+50,"Naive Bayes",0.5
+50,"Naive Bayes",0.3
+50,"Naive Bayes",1.5
+50,"KNN",1
+50,"KNN",9
+50,"KNN",11
+60,"Linear SVM",0.5
+60,"Linear SVM",0.3
+60,"Linear SVM",1.5
+60,"Random Forest","100, 200"
+60,"Random Forest","150, 300"
+60,"Random Forest","200, 400"
+60,"Random Forest","300, 600"
+60,"Naive Bayes",0.5
+60,"Naive Bayes",0.3
+60,"Naive Bayes",1.5
+60,"KNN",1
+60,"KNN",9
+60,"KNN",11
+70,"Linear SVM",0.5
+70,"Linear SVM",0.3
+70,"Linear SVM",1.5
+70,"Random Forest","100, 200"
+70,"Random Forest","150, 300"
+70,"Random Forest","200, 400"
+70,"Random Forest","300, 600"
+70,"Naive Bayes",0.5
+70,"Naive Bayes",0.3
+70,"Naive Bayes",1.5
+70,"KNN",1
+70,"KNN",9
+70,"KNN",11
+80,"Linear SVM",0.3
+80,"Linear SVM",0.5
+80,"Linear SVM",1.5
+80,"Linear SVM",1.8
+80,"Naive Bayes",1.5
+80,"Naive Bayes",1.8
+80,"Naive Bayes",0.5
+80,"Random Forest","100, 200"
+80,"Random Forest","150, 300"
+80,"Random Forest","200, 400"
+80,"Random Forest","300, 600"
+80,"KNN",1
+80,"KNN",9
+80,"KNN",11
+90,"Linear SVM",1.5
+90,"Linear SVM",1.8
+90,"Linear SVM",0.5
+90,"Naive Bayes",0.3
+90,"Naive Bayes",0.5
+90,"Naive Bayes",1.5
+90,"Naive Bayes",1.8
+90,"Random Forest","100, 200"
+90,"Random Forest","150, 300"
+90,"Random Forest","200, 400"
+90,"Random Forest","300, 600"
+90,"KNN",1
+90,"KNN",9
+90,"KNN",11
