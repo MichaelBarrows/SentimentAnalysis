@@ -12,15 +12,25 @@ This project aims to label Iranian state-sponsored propaganda for sentiment and 
 <h3>About</h3>
 <hr style="margin:10px 0;padding:0;"/>
 
-##### What is this code supposed to do?
+This code runs the machine learning algorithms with the relevant data. This code contains functionality to:
+  - Execute machine learning algorithms
+    - with different features such as unigrams; bigrams; trigrams; unigrams & bigrams; and unigrams, bigrams & trigrams
+  - generate baseline results, for each lower 10% (match percentage threshold) removed
+  - generate initial experiment results
+  - generate experimental roesults automatically based on the baseline and initial experiment results
+  - partition the dataset into variou folds for evaluation
+  - create features
+  - store metrics
+  - create results files
+  - store all metrics for each experiment.
 
 <h3>Prerequisites</h3>
 <hr style="margin:10px 0;padding:0;"/>
 
 **Note:** it is recommended that you create a virtual environment (the code was created for Python 3.6):
 
-    mkvirtualenv --python=/usr/bin/python3.6 nuclear_deal_tweet_extraction
-#####    workon %venvname%
+    mkvirtualenv --python=/usr/bin/python3.6 sentiment_analysis
+    workon sentiment_analysis
 
 
 To install the required dependencies:
@@ -34,11 +44,10 @@ Copy `dataset.py.example` to `dataset.py`
 
 in `dataset.py`:
 - Add the absolute path to the `dataset` variable (folder containing the dataset files)
-  - e.g. `/home/USER/nuclear_deal_tweet_extraction/data/`
+  - e.g. `/home/USER/sentiment_labelling/data/`
 - Add an absolute path to the `output_data` variable for storing output data
-  - e.g. `/home/USER/nuclear_deal_tweet_extraction/output_data/`
-- For each of the dataset files listed, add the filenames (and folders if in folders beyond the absolute path)
-  - e.g. `2019_01/iran_2019_01_tweets_1.csv `
+  - e.g. `/home/USER/sentiment_analysis/output_data/`
+- Modify other variables in the file as required
 
 <h3>Requirements</h3>
 <hr style="margin:10px 0;padding:0;"/>
@@ -49,4 +58,4 @@ The requirements for this code to run are detailed in `requirements.txt`.
 <hr style="margin:10px 0;padding:0;"/>
 
 - Within the Python virtual environment, run:
-`python run.py`
+`python run_all.py`
