@@ -33,7 +33,7 @@ import metric_storage
 #       (by calling bag_of_ngrams(n_grams)). This function then calls the
 #       relevant algorithm to be used, returning the metrics for storage.
 def data_split_bow_run (algorithm, modifier, n_folds, df, n_grams):
-    kf = KFold(n_splits=n_folds)
+    kf = KFold(n_splits=n_folds, shuffle=True, random_state=12)
     metrics_dict = {"Positive": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
                     "Neutral": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
                     "Negative": {"precision": [], "recall": [], "f1-score": [], "support": [], "avg": {"precision": 0, "recall": 0, "f1-score": 0, "support": 0}},
